@@ -12,9 +12,11 @@ import hudson.model.Job;
 
 import java.util.List;
 import java.util.logging.Logger;
+import java.io.*;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.lf5.LogLevel;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
@@ -38,15 +40,19 @@ public class DynamicParameter extends ParameterDefinition {
   public String value = "";
   public String dynamicValue = "";
   public String valueOptions;
+  public String defaultValue;
   public String dynamicValueOptions;
   public String secondName;
+  public String filePath;
 
   @DataBoundConstructor
-  public DynamicParameter(String name, String description, String valueOptions, String dynamicValueOptions, String secondName) {
+  public DynamicParameter(String name, String description, String valueOptions, String defaultValue, String dynamicValueOptions, String secondName, String filePath ) {
     super(name, description);
     this.secondName = secondName;
     this.valueOptions = valueOptions;
+    this.defaultValue = defaultValue;
     this.dynamicValueOptions = dynamicValueOptions;
+    this.filePath = filePath;
   }
 
   @Extension
@@ -93,18 +99,36 @@ public class DynamicParameter extends ParameterDefinition {
       return m;
     }
 
-    public ListBoxModel doFillDynamicValueItems(@QueryParameter String name, @QueryParameter String value) {
+    public ListBoxModel doFillDynamicValueItems(@QueryParameter String name, @QueryParameter String value) throws IOException {
       ListBoxModel m = new ListBoxModel();
-
+              
       DynamicParameter dp = this.getDynamicParameter(name);
-      if (dp != null) {
-        for (String s : dp.dynamicValueOptions.split("\\r?\\n")) {
+      String finalValueOptions = "";
+      
+      // If a file is specified, read it and dump it into finalValueOptions
+      if( !dp.filePath.isEmpty() )
+      {
+    	  //String everything = "";
+    	  FileInputStream inputStream = new FileInputStream( dp.filePath );
+    	    try {
+    	        finalValueOptions = IOUtils.toString(inputStream);
+    	    } finally {
+    	        inputStream.close();
+    	    }    	    
+    	    // Process the string
+    	    //String [] sl = everything.split("\n");
+    	    //LOG.warning("I found " + sl.length + "items" );    	  
+      }
+      else if (dp != null) {
+    	  finalValueOptions = dp.dynamicValueOptions;
+      }
+      for (String s : finalValueOptions.split("\\r?\\n")) {
           if (s.indexOf(value) == 0) {
             String[] str = s.split(":");
+            // TODO: More input checking
             m.add(str[1]);
           }
-        }
-      }
+      }  
       return m;
     }
   }
