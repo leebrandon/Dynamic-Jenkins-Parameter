@@ -5,11 +5,19 @@
     <artifactId>plugin</artifactId>
     <version>1.525</version><!-- which version of Jenkins is this plugin built against? -->
   </parent>
+  
+	<artifactId>Dynamic-Jenkins-Parameter</artifactId>
+	<packaging>hpi</packaging>
+	<version>1.0.1-snapshot-Dena</version>
+	<name>Dynamic Parameter Jenkins Plug-In</name>
+	<url>https://github.com/leebrandon/Dynamic-Jenkins-Parameter</url>
 
   <groupId>com.tekante.jenkins</groupId>
+  <!-- 
   <artifactId>dynamic-parameter</artifactId>
   <version>1.0</version>
   <packaging>hpi</packaging>
+  -->
 
   <!-- get every artifact through maven.glassfish.org, which proxies all the artifacts that we need -->
   <repositories>

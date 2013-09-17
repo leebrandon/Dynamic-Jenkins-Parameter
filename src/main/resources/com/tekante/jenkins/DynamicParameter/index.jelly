@@ -7,13 +7,20 @@
     <div name="parameter">
       <j:set var="instance" value="${it}" />
       <j:set var="descriptor" value="${it.descriptor}" />
+      <j:set var="width" value="250px" />
 
       <input type="hidden" name="name" value="${it.name}" />
-      <input type="hidden" name="secondName" value="${it.secondName}" />
-      ${it.name}<br />
-      <f:select field="value" default="" title="${it.name}" /><br />
-      ${it.secondName}<br />
-      <f:select field="dynamicValue" title="${it.secondName}" />
-    </div>
+      <input type="hidden" name="secondName" value="${it.secondName}" />	  	 
+	  
+	  ${it.name}	  
+      <f:select field="value" default="" title="${it.name}" style="width:${width}" />      
+      
+      <br /><br />            
+      ${it.secondName}
+      <f:select field="dynamicValue" title="${it.secondName}" style="width:${width}" />      
+      
+     </div>
+
   </f:entry>
+   
 </j:jelly>

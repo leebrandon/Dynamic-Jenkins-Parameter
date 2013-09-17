@@ -9,6 +9,7 @@
     Creates a text field that shows the value of the "name" property.
     When submitted, it will be passed to the corresponding constructor parameter.
   -->
+
   <f:entry title="Name" field="name" description="The name of the parameter set by the first select box">
     <f:textbox />
   </f:entry>
@@ -30,4 +31,5 @@
   <f:entry title="File containing Options" field="filePath" description="Absolute path to file containing all the possible options">
     <f:textbox />
   </f:entry>
+ 		
 </j:jelly>

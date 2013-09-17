@@ -108,25 +108,23 @@ public class DynamicParameter extends ParameterDefinition {
       // If a file is specified, read it and dump it into finalValueOptions
       if( !dp.filePath.isEmpty() )
       {
-    	  //String everything = "";
     	  FileInputStream inputStream = new FileInputStream( dp.filePath );
     	    try {
     	        finalValueOptions = IOUtils.toString(inputStream);
     	    } finally {
     	        inputStream.close();
-    	    }    	    
-    	    // Process the string
-    	    //String [] sl = everything.split("\n");
-    	    //LOG.warning("I found " + sl.length + "items" );    	  
+    	    }    	        	     	  
       }
       else if (dp != null) {
     	  finalValueOptions = dp.dynamicValueOptions;
       }
       for (String s : finalValueOptions.split("\\r?\\n")) {
-          if (s.indexOf(value) == 0) {
-            String[] str = s.split(":");
-            // TODO: More input checking
-            m.add(str[1]);
+          if ( s.indexOf(value) == 0 ) {
+        	  if( !s.startsWith("#")) {		// Avoid the comment lines        		          
+	            String[] str = s.split(":");
+	            // TODO: More input checking
+	            m.add(str[1]);
+        	  }
           }
       }  
       return m;
